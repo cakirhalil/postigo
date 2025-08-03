@@ -12,14 +12,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
-import { useAuth, SignInButton, SignOutButton } from "@clerk/nextjs";
+import { useAuth, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
 function MobileNavbar() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { isSignedIn } = useAuth();
+  const { user } = useUser();
   const { theme, setTheme } = useTheme();
+
+  const getUsername = () => {
+    if (!user) return null;
+    return user.username || user.emailAddresses[0]?.emailAddress.split('@')[0];
+  };
+
+  const username = getUsername();
 
   return (
     <div className="flex md:hidden items-center space-x-2">
@@ -31,7 +39,7 @@ function MobileNavbar() {
       >
         <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
         <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-        <span className="sr-only">Temayı değiştir</span>
+        <span className="sr-only">Toggle theme</span>
       </Button>
 
       <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
@@ -42,41 +50,52 @@ function MobileNavbar() {
         </SheetTrigger>
         <SheetContent side="right" className="w-[300px]">
           <SheetHeader>
-            <SheetTitle>Menü</SheetTitle>
+            <SheetTitle>Menu</SheetTitle>
           </SheetHeader>
           <nav className="flex flex-col space-y-4 mt-6">
             <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
-              <Link href="/">
+              <Link href="/" onClick={() => setShowMobileMenu(false)}>
                 <HomeIcon className="w-4 h-4" />
-                Ana Sayfa
+                Home
               </Link>
             </Button>
 
             {isSignedIn ? (
               <>
                 <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
-                  <Link href="/notifications">
+                  <Link href="/notifications" onClick={() => setShowMobileMenu(false)}>
                     <BellIcon className="w-4 h-4" />
-                    Bildirimler
+                    Notifications
                   </Link>
                 </Button>
                 <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
-                  <Link href="/profile">
+                  <Link 
+                    href={username ? `/profile/${username}` : "/profile"} 
+                    onClick={() => setShowMobileMenu(false)}
+                  >
                     <UserIcon className="w-4 h-4" />
-                    Profil
+                    Profile
                   </Link>
                 </Button>
                 <SignOutButton>
-                  <Button variant="ghost" className="flex items-center gap-3 justify-start w-full">
+                  <Button 
+                    variant="ghost" 
+                    className="flex items-center gap-3 justify-start w-full"
+                    onClick={() => setShowMobileMenu(false)}
+                  >
                     <LogOutIcon className="w-4 h-4" />
-                    Çıkış Yap
+                    Logout
                   </Button>
                 </SignOutButton>
               </>
             ) : (
               <SignInButton mode="modal">
-                <Button variant="default" className="w-full">
-                  Giriş Yap
+                <Button 
+                  variant="default" 
+                  className="w-full"
+                  onClick={() => setShowMobileMenu(false)}
+                >
+                  Sign In
                 </Button>
               </SignInButton>
             )}
