@@ -50,13 +50,13 @@ function MobileNavbar() {
         </SheetTrigger>
         <SheetContent side="right" className="w-[300px]">
           <SheetHeader>
-            <SheetTitle>Menu</SheetTitle>
+            <SheetTitle>Menü</SheetTitle>
           </SheetHeader>
           <nav className="flex flex-col space-y-4 mt-6">
             <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
               <Link href="/" onClick={() => setShowMobileMenu(false)}>
                 <HomeIcon className="w-4 h-4" />
-                Home
+                Ana Sayfa
               </Link>
             </Button>
 
@@ -65,7 +65,7 @@ function MobileNavbar() {
                 <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
                   <Link href="/notifications" onClick={() => setShowMobileMenu(false)}>
                     <BellIcon className="w-4 h-4" />
-                    Notifications
+                    Bildirimler
                   </Link>
                 </Button>
                 <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
@@ -74,7 +74,7 @@ function MobileNavbar() {
                     onClick={() => setShowMobileMenu(false)}
                   >
                     <UserIcon className="w-4 h-4" />
-                    Profile
+                    Profil
                   </Link>
                 </Button>
                 <SignOutButton>
@@ -84,7 +84,7 @@ function MobileNavbar() {
                     onClick={() => setShowMobileMenu(false)}
                   >
                     <LogOutIcon className="w-4 h-4" />
-                    Logout
+                    Çıkış Yap
                   </Button>
                 </SignOutButton>
               </>
@@ -95,7 +95,7 @@ function MobileNavbar() {
                   className="w-full"
                   onClick={() => setShowMobileMenu(false)}
                 >
-                  Sign In
+                  Giriş Yap
                 </Button>
               </SignInButton>
             )}
